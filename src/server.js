@@ -23,10 +23,6 @@ const PORT = process.env.PORT || 8080;
 const JWT_SECRET = process.env.JWT_SECRET || "dev-secret-change-in-production";
 const DB_DIR = path.join(__dirname, "..", "data");
 const DB_FILE = path.join(DB_DIR, "team_task_manager.db");
-const CORS_ORIGINS = String(process.env.CORS_ORIGIN || "")
-  .split(",")
-  .map((item) => item.trim())
-  .filter(Boolean);
 
 if (!fs.existsSync(DB_DIR)) {
   fs.mkdirSync(DB_DIR, { recursive: true });
@@ -35,20 +31,12 @@ if (!fs.existsSync(DB_DIR)) {
 const db = new sqlite3.Database(DB_FILE);
 
 app.use(express.json());
-const corsOptions = {
-  origin(origin, callback) {
-    // Allow non-browser requests and same-origin server calls.
-    if (!origin) return callback(null, true);
-    if (CORS_ORIGINS.length === 0 || CORS_ORIGINS.includes(origin)) {
-      return callback(null, true);
-    }
-    return callback(new Error("Not allowed by CORS"));
-  },
+app.use(cors({
+  origin: true,
   methods: ["GET", "POST", "PATCH", "DELETE", "OPTIONS"],
   allowedHeaders: ["Content-Type", "Authorization"]
-};
-app.use(cors(corsOptions));
-app.options("*", cors(corsOptions));
+}));
+app.options("*", cors());
 app.use(express.static(path.join(__dirname, "..", "public")));
 
 function run(sql, params = []) {
@@ -541,9 +529,6 @@ app.get("/api/dashboard", authRequired, async (req, res) => {
 });
 
 app.use((error, _req, res, _next) => {
-  if (error.message === "Not allowed by CORS") {
-    return res.status(403).json({ message: "CORS blocked for this origin." });
-  }
   return res.status(500).json({ message: "Unexpected server error.", error: error.message });
 });
 
