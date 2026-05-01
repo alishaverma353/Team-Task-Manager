@@ -12,79 +12,89 @@ This project satisfies the assignment requirements with:
 ## Stack
 
 - Backend: Node.js + Express
-- Database: SQLite (`data/team_task_manager.db`)
+- Database: SQLite (data/team_task_manager.db)
 - Auth: JWT + bcrypt
 - Frontend: HTML/CSS/Vanilla JS served by Express
 
 ## API Overview
 
-- Auth
-  - `POST /api/auth/signup`
-  - `POST /api/auth/login`
-- Projects
-  - `GET /api/projects` (auth)
-  - `POST /api/projects` (admin only)
-  - `GET /api/projects/:projectId/members` (project members)
-  - `POST /api/projects/:projectId/members` (admin only)
-  - `DELETE /api/projects/:projectId/members/:userId` (admin only)
-- Users
-  - `GET /api/users` (admin only)
-- Tasks
-  - `GET /api/tasks?projectId=<id>` (project members)
-  - `POST /api/tasks` (project members, assignee must be member)
-  - `PATCH /api/tasks/:taskId` (project members)
-  - `DELETE /api/tasks/:taskId` (project members)
-- Dashboard
-  - `GET /api/dashboard` (my totals + overdue)
+### Auth
+- POST /api/auth/signup
+- POST /api/auth/login
+
+### Projects
+- GET /api/projects (auth)
+- POST /api/projects (admin only)
+- GET /api/projects/:projectId/members
+- POST /api/projects/:projectId/members (admin only)
+- DELETE /api/projects/:projectId/members/:userId (admin only)
+
+### Users
+- GET /api/users (admin only)
+
+### Tasks
+- GET /api/tasks?projectId=<id>
+- POST /api/tasks
+- PATCH /api/tasks/:taskId
+- DELETE /api/tasks/:taskId
+
+### Dashboard
+- GET /api/dashboard
 
 ## Validation and Relationships
 
-- Email is unique.
-- Password length minimum 6.
-- Role is restricted to `admin` or `member`.
-- Project members are unique per project.
-- Tasks enforce:
-  - status in `todo`, `in_progress`, `done`
-  - valid project reference
-  - assignee must be in the same project
-- Foreign keys are enabled in SQLite.
+- Email is unique
+- Password minimum length is 6
+- Role must be either 'admin' or 'member'
+- Project members must be unique per project
+- Task rules:
+  - status must be 'todo', 'in_progress', or 'done'
+  - project must exist
+  - assignee must belong to the project
+- SQLite foreign keys are enabled
 
 ## Local Run
 
-1. Install Node.js 18+.
+1. Install Node.js (v18+)
+
 2. Install dependencies:
+   npm install
 
-```bash
-npm install
-```
+3. Set environment variable:
+   set JWT_SECRET=your_super_secret_key
 
-3. Optional: set environment variable for production-grade token secret.
-
-```bash
-set JWT_SECRET=replace_with_long_random_value
-```
-
-4. Start:
-
-```bash
-npm start
-```
+4. Start server:
+   npm start
 
 5. Open:
+   http://localhost:3000
 
-`http://localhost:3000`
+## Render Deployment
 
-## Railway Deployment (Mandatory)
+1. Push your project to GitHub
 
-1. Push this project to GitHub.
-2. In [Railway](https://railway.app), create **New Project**.
-3. Choose **Deploy from GitHub Repo** and select this repo.
-4. In service variables, set:
-   - `JWT_SECRET` = a long random secret
-5. Railway auto-provides `PORT`, and app already uses it.
-6. Deploy and open the generated Railway domain.
+2. Go to https://render.com
 
-## Notes
+3. Click "New +" → "Web Service"
 
-- SQLite data is created automatically at first start.
-- For production, keep `JWT_SECRET` private and strong.
+4. Connect your GitHub repository
+
+5. Use the following settings:
+
+   Build Command:
+   npm install
+
+   Start Command:
+   npm start
+
+6. Add Environment Variable:
+
+   KEY: JWT_SECRET  
+   VALUE: your_super_secret_key
+
+7. Click Deploy
+
+8. After deployment, open your app:
+
+   https://your-app-name.onrender.com
+
