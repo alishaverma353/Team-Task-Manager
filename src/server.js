@@ -6,7 +6,7 @@ const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 
 const app = express();
-const PORT = process.env.PORT;
+const PORT = process.env.PORT || 8080;
 const JWT_SECRET = process.env.JWT_SECRET || "dev-secret-change-in-production";
 const DB_DIR = path.join(__dirname, "..", "data");
 const DB_FILE = path.join(DB_DIR, "team_task_manager.db");
@@ -141,6 +141,10 @@ async function isProjectMember(projectId, userId) {
 
 app.get("/api/health", (_req, res) => {
   res.json({ status: "ok" });
+});
+
+app.get("/", (_req, res) => {
+  res.send("Team Task Manager API is running");
 });
 
 app.post("/api/auth/signup", async (req, res) => {
