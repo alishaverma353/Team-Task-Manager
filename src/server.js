@@ -1,3 +1,15 @@
+console.log("Starting server initialization...");
+
+process.on("uncaughtException", (error) => {
+  console.error("[uncaughtException] Unhandled exception:", error);
+  process.exit(1);
+});
+
+process.on("unhandledRejection", (reason, promise) => {
+  console.error("[unhandledRejection] Unhandled promise rejection at:", promise, "reason:", reason);
+  process.exit(1);
+});
+
 const express = require("express");
 const path = require("path");
 const fs = require("fs");
@@ -48,7 +60,15 @@ function all(sql, params = []) {
 }
 
 async function initializeDatabase() {
-  await run("PRAGMA foreign_keys = ON");
+  console.log("Initializing database at:", DB_FILE);
+
+  try {
+    await run("PRAGMA foreign_keys = ON");
+    console.log("Database connection established, foreign keys enabled.");
+  } catch (error) {
+    console.error("Failed to enable foreign keys:", error);
+    throw error;
+  }
 
   await run(`
     CREATE TABLE IF NOT EXISTS users (
@@ -507,11 +527,12 @@ app.use((error, _req, res, _next) => {
 
 initializeDatabase()
   .then(() => {
+    console.log("Database initialized successfully. Starting HTTP server on port " + PORT + "...");
     app.listen(PORT, "0.0.0.0", () => {
-      console.log("Server running on port " + PORT);
+      console.log("Server is ready and listening on port " + PORT);
     });
   })
   .catch((error) => {
-    console.error("Database initialization failed:", error);
+    console.error("Database initialization failed — server will not start:", error);
     process.exit(1);
   });
