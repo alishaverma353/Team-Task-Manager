@@ -19,12 +19,17 @@ const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 
 const app = express();
-app.use(cors({
-  origin: process.env.CORS_ORIGIN || "*",
-  credentials: true
-}));
+const CORS_ORIGIN = process.env.CORS_ORIGIN || "*";
+const corsOptions = {
+  origin: CORS_ORIGIN === "*" ? true : CORS_ORIGIN,
+  credentials: CORS_ORIGIN === "*" ? false : true,
+  methods: ["GET", "POST", "PATCH", "DELETE", "OPTIONS"],
+  allowedHeaders: ["Content-Type", "Authorization"]
+};
+app.use(cors(corsOptions));
+app.options("*", cors(corsOptions));
 
-const PORT = process.env.PORT || 8080;
+const PORT = process.env.PORT || 3000;
 const JWT_SECRET = process.env.JWT_SECRET || "dev-secret-change-in-production";
 const DB_DIR = path.join(__dirname, "..", "data");
 const DB_FILE = path.join(DB_DIR, "team_task_manager.db");
@@ -533,9 +538,8 @@ app.use((error, _req, res, _next) => {
 
 initializeDatabase()
   .then(() => {
-    console.log("Database initialized successfully. Starting HTTP server on port " + PORT + "...");
     app.listen(PORT, "0.0.0.0", () => {
-      console.log("Server is ready and listening on port " + PORT);
+      console.log("Server running on port " + PORT);
     });
   })
   .catch((error) => {
