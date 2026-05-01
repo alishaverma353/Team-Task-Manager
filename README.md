@@ -89,8 +89,7 @@ This project satisfies the assignment requirements with:
 
 6. Add Environment Variable:
 
-   KEY: JWT_SECRET  
-   VALUE: your_super_secret_key
+   JWT_SECRET=your_super_secret_key
 
 7. Click Deploy
 
@@ -98,3 +97,14 @@ This project satisfies the assignment requirements with:
 
    https://your-app-name.onrender.com
 
+## Important Notes
+
+- Make sure your server uses:
+  const PORT = process.env.PORT || 3000;
+
+- Ensure frontend is served using:
+  app.use(express.static("public"));
+
+- SQLite works but data may reset on free tier redeploy
+
+- For production, use PostgreSQL instead of SQLite
