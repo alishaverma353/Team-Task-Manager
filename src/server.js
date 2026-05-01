@@ -11,6 +11,7 @@ process.on("unhandledRejection", (reason, promise) => {
 });
 
 const express = require("express");
+const cors = require("cors");
 const path = require("path");
 const fs = require("fs");
 const sqlite3 = require("sqlite3").verbose();
@@ -29,6 +30,12 @@ if (!fs.existsSync(DB_DIR)) {
 
 const db = new sqlite3.Database(DB_FILE);
 
+app.use(cors({
+  origin: "*",
+  methods: ["GET", "POST", "DELETE", "PATCH", "OPTIONS"],
+  allowedHeaders: ["Content-Type", "Authorization"],
+  credentials: false
+}));
 app.use(express.json());
 app.use(express.static(path.join(__dirname, "..", "public")));
 
