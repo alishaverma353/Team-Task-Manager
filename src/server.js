@@ -6,7 +6,7 @@ const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 
 const app = express();
-const PORT = process.env.PORT || 3000;
+const PORT = process.env.PORT || 8080;
 const JWT_SECRET = process.env.JWT_SECRET || "dev-secret-change-in-production";
 const DB_DIR = path.join(__dirname, "..", "data");
 const DB_FILE = path.join(DB_DIR, "team_task_manager.db");
@@ -504,7 +504,7 @@ app.use((error, _req, res, _next) => {
 initializeDatabase()
   .then(() => {
     app.listen(PORT, () => {
-      console.log(`Team Task Manager running on http://localhost:${PORT}`);
+      console.log("Server running on port " + PORT);
     });
   })
   .catch((error) => {
