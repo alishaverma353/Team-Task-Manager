@@ -1,0 +1,119 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Team Task Manager</title>
+    <link rel="stylesheet" href="./styles.css" />
+  </head>
+  <body>
+    <main class="container">
+      <header class="card">
+        <h1>Team Task Manager</h1>
+        <p class="subtitle">Projects, team members, assigned tasks, and dashboard.</p>
+      </header>
+
+      <section id="auth-section" class="card auth-wrap">
+        <div class="auth-tabs">
+          <button id="show-login" type="button" class="secondary">Login</button>
+          <button id="show-signup" type="button" class="secondary">Signup</button>
+        </div>
+
+        <form id="login-form">
+          <h2>Login</h2>
+          <input id="login-email" type="email" placeholder="Email" required />
+          <input id="login-password" type="password" placeholder="Password" required />
+          <button type="submit">Login</button>
+        </form>
+
+        <form id="signup-form" class="hidden">
+          <h2>Signup</h2>
+          <input id="signup-name" placeholder="Name" required />
+          <input id="signup-email" type="email" placeholder="Email" required />
+          <input id="signup-password" type="password" placeholder="Password (min 6)" required />
+          <select id="signup-role">
+            <option value="member">Member</option>
+            <option value="admin">Admin</option>
+          </select>
+          <button type="submit">Create Account</button>
+        </form>
+      </section>
+
+      <section id="app-section" class="hidden">
+      <section class="card session-row">
+        <span id="current-user">Not logged in</span>
+        <button id="logout-btn" class="secondary">Logout</button>
+      </section>
+
+      <section class="grid-2">
+        <form id="project-form" class="card">
+          <h2>Create Project (Admin)</h2>
+          <input id="project-name" placeholder="Project name" required />
+          <textarea id="project-description" placeholder="Project description"></textarea>
+          <button type="submit">Create Project</button>
+        </form>
+
+        <div class="card">
+          <h2>Dashboard (My Tasks)</h2>
+          <ul id="dashboard-list">
+            <li>Total: 0</li>
+            <li>To Do: 0</li>
+            <li>In Progress: 0</li>
+            <li>Done: 0</li>
+            <li>Overdue: 0</li>
+          </ul>
+          <button id="refresh-dashboard" class="secondary">Refresh Dashboard</button>
+        </div>
+      </section>
+
+      <section class="card">
+        <h2>Projects</h2>
+        <div class="row">
+          <select id="project-select"></select>
+          <button id="load-project-data" class="secondary">Load Project</button>
+        </div>
+        <ul id="project-list"></ul>
+      </section>
+
+      <section class="grid-2">
+        <form id="member-form" class="card">
+          <h2>Add Team Member (Admin)</h2>
+          <input id="member-user-id" type="number" placeholder="User ID" required />
+          <button type="submit">Add Member</button>
+          <small>Use user ID from "All Users" list.</small>
+        </form>
+
+        <div class="card">
+          <h2>All Users (Admin)</h2>
+          <ul id="user-list"></ul>
+        </div>
+      </section>
+
+      <section class="grid-2">
+        <div class="card">
+          <h2>Project Members</h2>
+          <ul id="member-list"></ul>
+        </div>
+
+        <form id="task-form" class="card">
+          <h2>Create Task</h2>
+          <input id="task-title" placeholder="Task title" required />
+          <textarea id="task-description" placeholder="Task description"></textarea>
+          <input id="task-assigned-to" type="number" placeholder="Assign to user ID" required />
+          <input id="task-due-date" type="date" />
+          <button type="submit">Create Task</button>
+        </form>
+      </section>
+
+      <section class="card">
+        <h2>Tasks in Selected Project</h2>
+        <ul id="task-list"></ul>
+      </section>
+      </section>
+
+      <p id="message" class="message"></p>
+    </main>
+
+    <script src="./app.js"></script>
+  </body>
+</html>
